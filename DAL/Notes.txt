@@ -1,0 +1,67 @@
+﻿SOLUTION:
+	- RecipeDBManagement
+
+	PROJECTS:
+		1. DAL (Template Class Library)
+
+		CLASS (Todas as classes são públicas, podendo ser acessadas de outras namespaces, desde que a namespace DAL seja adicionada às referências e adicionado "using DAL"):
+			- Department (Namespace DAL) 
+			PROPERTIES:
+			- Scalar properties: DepartmentID e DepartmentName
+			- Navigation properties: User (relação 1 Department -> n Users)
+			Todas as propriedades são públicas, podendo ser acessadas de outras namespaces, desde que a namespace DAL seja adicionada às referências e adicionado "using DAL"
+
+			- User (Namespace DAL)
+			PROPERTIES:
+			- Scalar properties: UserID, DepartmentID, Name, LastName, Email, Username, Password e Admin 
+			- Navigation properties: Department (relação 1 User <-> 1 Department)
+			Todas as propriedades são públicas, podendo ser acessadas de outras namespaces, desde que a namespace DAL seja adicionada às referências e adicionado "using DAL"
+
+		CONTEXT:
+			- RecipeContext (Namespace DAL)
+			DBSet
+			- User
+			- Department
+
+		MIGRATIONS:
+			- 01_Initial: Criação da base de dados RecipeDb, apenas com a tabela User, contendo as colunas UserID (PK), Name, Lastname, Email, Username, Password e Admin.
+				Configuration Seed: Criação do UserID = 1
+			- 02_NewTable_Department: Criação da tabela Department, contendo as colunas DepartmentID (PK) e DepartmentName
+				Configuration Seed: Criação do DepartmentID = 1
+			- 03_AddFKInUser_DepartmentID: Adição do campo DepartmentID na tabela Users, sendo este campo uma Foreign Key para a tabela Department
+
+
+		2. Client (Template Console App)
+
+			CLASS:
+				- Departamento (Namespace Client)
+				METHODS:
+					- MenuDepartment(); | InsertDepartment(); | UpdateDepartment(); | SelectDepartment(); | DeleteDepartment();
+						Internal, pois será usado apenas na namespace Client;
+						Static, pois não é necessário instânciar o objeto, sendo possível acessar o método diretamente a partir da classe a qual pertence (ex: Departamento.MenuDepartment)
+						Void, pois não retorna nenhum valor
+
+					- ConsultDepartment();
+						Internal, pois será usado apenas na namespace Client;
+						Static, pois não é necessário instânciar o objeto, sendo possível acessar o método diretamente a partir da classe a qual pertence
+						IQueryable (não void), pois deve retornar a lista dos departamentos encontrados
+
+
+
+				- Utilizador (Namespace Client)
+				METHODS:
+					- MenuUser(); | MenuSelectUser(); | SelectAdmin(); | SelectRegularUsers(); | SelectUsersBuDepartment();
+						Internal, pois será usado apenas na namespace Client;
+						Static, pois não é necessário instânciar o objeto, sendo possível acessar o método diretamente a partir da classe a qual pertence
+						Void, pois não retorna nenhum valor
+					- InsertUser(); | UpdateUser(); | DeleteUser();
+						Internal, pois será usado apenas na namespace Client;
+						Instância, pois para acessá-lo faz-se necessário instanciar um objeto da classe User (User user = new User)
+						Void, pois não retorna nenhum valor
+					- ConsultEmail(); | ConsultUsername(); | MatchPasswords(); | ValidateEmail(); | ValidatePassword(); | IdentifyUser(); | ChooseUserByID(); | ChooseUserByUsername(); | ChooseUserByEmail
+						Internal, pois será usado apenas na namespace Client;
+						Static, pois não é necessário instânciar o objeto, sendo possível acessar o método diretamente a partir da classe a qual pertence
+						Não void, pois retornam valor
+
+
+	
